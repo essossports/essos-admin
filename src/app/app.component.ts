@@ -5,11 +5,20 @@ import { CommonModule } from '@angular/common';
 import { SharedService } from './shared/shared.service';
 import { BookingsComponent } from './home/bookings/bookings.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { BookingformComponent } from './home/bookingform/bookingform.component';
+import { AllbookingsComponent } from './home/allbookings/allbookings.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [LoginComponent, CommonModule, BookingsComponent, NavbarComponent],
+  imports: [
+    LoginComponent,
+    CommonModule,
+    BookingsComponent,
+    NavbarComponent,
+    BookingformComponent,
+    AllbookingsComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

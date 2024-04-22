@@ -8,8 +8,11 @@
     <div *ngIf="sharedService.currentPage === 'home'">
       <app-bookings></app-bookings>
     </div>
-    <div *ngIf="sharedService.currentPage === 'bookings'">
-      <app-bookings></app-bookings>
+    <div *ngIf="sharedService.currentPage === 'all-booking'">
+      <app-allbookings></app-allbookings>
+    </div>
+    <div *ngIf="sharedService.currentPage === 'add-booking'">
+      <app-bookingform></app-bookingform>
     </div>
   </ng-container>
 </ng-template>

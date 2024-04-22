@@ -1,0 +1,39 @@
+<div class="container">
+  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+    <label for="date" class="form-label mt-4">Date: </label>
+    <input id="date" type="date" class="form-control" placeholder="Enter Date" formControlName="date" />
+  
+    <label for="name" class="form-label mt-4">Name: </label>
+    <input id="name" type="text"class="form-control" placeholder="Enter Name" formControlName="name" />
+
+    <label for="number" class="form-label mt-4">Mobile No.: </label>
+    <input id="number" type="tel"class="form-control" placeholder="Enter Mobile" formControlName="number" />
+  
+    <label for="booking_type" class="form-label mt-4">Booking Type: </label>
+    <input id="booking_type" type="text"class="form-control" placeholder="Enter Booking Type" formControlName="booking_type" />
+    
+    <label for="start_time" class="form-label mt-4">Start Time: </label>
+    <input id="start_time" type="time"class="form-control" placeholder="Enter Start Time" formControlName="start_time" />
+  
+    <label for="end_time" class="form-label mt-4">End Time: </label>
+    <input id="end_time" type="time"class="form-control" placeholder="Enter End Time" formControlName="end_time" />
+  
+    
+    <label for="total_amount" class="form-label mt-4">Total Amount: </label>
+    <input id="total_amount" type="number" class="form-control" placeholder="Enter Total Amount" formControlName="total_amount" />
+
+    <label for="amount_received" class="form-label mt-4">Amount Received: </label>
+    <input id="amount_received" type="number" class="form-control" placeholder="Enter Amount Received" formControlName="amount_received" />
+
+    <label for="balance" class="form-label mt-4">Balance: </label>
+    <input id="balance" type="number" class="form-control" placeholder="Enter Balance" formControlName="balance" />
+
+    <label for="comments" class="form-label mt-4">Comments: </label>
+    <input id="comments" type="text" class="form-control" placeholder="Enter Comments" formControlName="comments" />
+  
+    <p>Complete the form to enable button.</p>
+    <button type="submit" class="btn btn-primary" [disabled]="!bookingForm.valid">Submit</button>
+  </form>
+</div>
+
+
