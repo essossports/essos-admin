@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllbookingsComponent } from './AllbookingsComponent';
+import { ExcelFormComponent } from './excel-form.component';
 
-describe('AllbookingsComponent', () => {
-  let component: AllbookingsComponent;
-  let fixture: ComponentFixture<AllbookingsComponent>;
+describe('ExcelFormComponent', () => {
+  let component: ExcelFormComponent;
+  let fixture: ComponentFixture<ExcelFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AllbookingsComponent]
+      imports: [ExcelFormComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(AllbookingsComponent);
+    fixture = TestBed.createComponent(ExcelFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

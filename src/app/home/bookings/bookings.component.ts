@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 
 @Component({
@@ -6,12 +6,18 @@ import { SharedService } from '../../shared/shared.service';
   standalone: true,
   imports: [],
   templateUrl: './bookings.component.html',
-  styleUrl: './bookings.component.css'
+  styleUrl: './bookings.component.css',
 })
 export class BookingsComponent {
-  sharedService = inject(SharedService);
+  constructor(private sharedService: SharedService) {}
 
   showPage(page: string) {
+    console.log(this.sharedService.bookingForm.value);
+    this.sharedService.bookingForm.reset();
     this.sharedService.currentPage = page;
+  }
+
+  updateBooking() {
+    // this.sharedService.updateBooking();
   }
 }

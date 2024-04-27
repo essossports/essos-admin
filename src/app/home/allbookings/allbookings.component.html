@@ -7,75 +7,37 @@
         <th scope="col">Completed?</th>
       </tr>
     </thead>
+
+<!-- email
+total_amount
+amount_received
+balance
+comments -->
     <tbody>
-      <tr>
+      <tr *ngFor="let booking of bookings" >
         <th scope="row">
-            20-04-24<br>
-            Saturday
-        </th>
-        <td>Ahmed Usman<br>8553083127<br>Website</td>
-        <td>5:30pm<br>6:30pm<br>1hr</td>
-        <td>
-            <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button>
-        </td>
+          {{booking.date}}<br>
+          Saturday
+      </th>
+      <td>{{booking.name}}<br>{{booking.number}}<br>{{booking.booking_type}}</td>
+      <td>{{booking.start_time}}<br>{{booking.end_time}}<br>1hr</td>
+      <td>
+          <button type="button" class="btn btn-primary mx-1" (click)="updateBooking(booking.id)">Update</button>
+      </td>
       </tr>
       <tr>
         <th scope="row">
             20-04-24<br>
-            Saturday
+            Sample
         </th>
         <td>Ahmed Usman<br>8553083127<br>Website</td>
         <td>5:30pm<br>6:30pm<br>1hr</td>
         <td>
-            <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-            20-04-24<br>
-            Saturday
-        </th>
-        <td>Ahmed Usman<br>8553083127<br>Website</td>
-        <td>5:30pm<br>6:30pm<br>1hr</td>
-        <td>
-            <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-            20-04-24<br>
-            Saturday
-        </th>
-        <td>Ahmed Usman<br>8553083127<br>Website</td>
-        <td>5:30pm<br>6:30pm<br>1hr</td>
-        <td>
-            <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button>
+            <!-- <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button> -->
+            <button type="button" class="btn btn-primary mx-1" >Update</button>
         </td>
       </tr>
     </tbody>
   </table>
 
-
-
-  <div class="modal" id="exampleModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true"></span>
-          </button>
-        </div>
-        <div class="modal-body">
-            
-          <button type="button" class="btn btn-danger">Mark Cancelled</button>
-          <button type="button" class="btn btn-primary">Mark Completed</button>
-          <p>Modal body text goes here.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Save changes</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<button type="button" class="btn btn-primary mx-1" (click)="getAllBooking()">getAllBooking</button>

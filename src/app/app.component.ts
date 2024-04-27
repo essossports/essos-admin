@@ -6,7 +6,9 @@ import { SharedService } from './shared/shared.service';
 import { BookingsComponent } from './home/bookings/bookings.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { BookingformComponent } from './home/bookingform/bookingform.component';
-import { AllbookingsComponent } from './home/allbookings/allbookings.component';
+import { AllbookingsComponent } from './home/allbookings/AllbookingsComponent';
+import { ExcelFormComponent } from './home/excel-form/excel-form.component';
+import { ExcelMatchComponent } from './home/excel-match/excel-match.component';
 
 @Component({
   selector: 'app-root',
@@ -18,10 +20,14 @@ import { AllbookingsComponent } from './home/allbookings/allbookings.component';
     NavbarComponent,
     BookingformComponent,
     AllbookingsComponent,
+    ExcelFormComponent,
+    ExcelMatchComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
+
+
 export class AppComponent {
   title = 'angular-essos';
   isLoggedin: boolean | null = null;

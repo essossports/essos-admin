@@ -1,0 +1,28 @@
+
+<div class="container">
+  <form class="row" (ngSubmit)="onSubmit()">
+  <ng-template ngFor let-item [ngForOf]="firstExcelData" let-i="index">
+    <div class="col-2">
+      Row{{i+1}} ({{ getAlphabet(i+1) }})
+    </div>
+    <div class="col-5">
+      <select class="form-select" id="row{{i}}" name="select{{i}}" [(ngModel)]="selectedFields[i]">
+        <option *ngFor="let formField of formFields ; let first = first" [selected]="first">{{ formField }}</option>
+      </select>
+    </div>
+    <div class="col-5">
+      <fieldset disabled="">
+        <input
+          class="form-control"
+          id="disabledInput"
+          type="text"
+          placeholder="{{ item }}"
+          disabled=""
+        />
+      </fieldset>
+    </div>
+  </ng-template>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>

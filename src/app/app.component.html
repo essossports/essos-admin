@@ -14,6 +14,12 @@
     <div *ngIf="sharedService.currentPage === 'add-booking'">
       <app-bookingform></app-bookingform>
     </div>
+    <div *ngIf="sharedService.currentPage === 'excel-form'">
+      <app-excel-form></app-excel-form>
+    </div>
+    <div *ngIf="sharedService.currentPage === 'excel-match'">
+      <app-excel-match></app-excel-match>
+    </div>
   </ng-container>
 </ng-template>
 
