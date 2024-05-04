@@ -21,6 +21,11 @@ export class NavbarComponent {
   }
 
   showPage(page: string) {
-    this.sharedService.currentPage = page;
+    if (page === "add-booking") {
+      this.sharedService.bookingForm.reset();
+    } 
+      this.sharedService.lastPage = 'home';
+      this.sharedService.currentPage = page;
+    
   }
 }

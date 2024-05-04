@@ -1,43 +1,48 @@
-<table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Booked by</th>
-        <th scope="col">Slot</th>
-        <th scope="col">Completed?</th>
-      </tr>
-    </thead>
+<div class="container">
+  <form [formGroup]="bookMonthYear">
+    <div class="row">
+      <div class="col-6 col-lg-6">
+        <label for="year" class="form-label mt-4">Year: </label>
+        <select class="form-select" id="year" formControlName="year">
+          <option *ngFor="let year of years" [value]="year">{{year}}</option>
+        </select>
+      </div>
+      <div class="col-6 col-lg-6">
+        <label for="year" class="form-label mt-4">Month: </label>
+        <select class="form-select" id="year"formControlName="month">
+          <option *ngFor="let month of months" [value]="month">{{month}}</option>
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
 
-<!-- email
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Booked by</th>
+      <th scope="col">Slot</th>
+      <th scope="col">Completed?</th>
+    </tr>
+  </thead>
+
+  <!-- email
 total_amount
 amount_received
 balance
 comments -->
-    <tbody>
-      <tr *ngFor="let booking of bookings" >
-        <th scope="row">
-          {{booking.date}}<br>
-          Saturday
+  <tbody>
+    <tr *ngFor="let booking of bookings">
+      <th scope="row">
+        {{ booking.date.toDate() | date:'dd-MM-yyyy' }}<br>
+        {{ booking.date.toDate() | date:'EEEE' }}
       </th>
       <td>{{booking.name}}<br>{{booking.number}}<br>{{booking.booking_type}}</td>
-      <td>{{booking.start_time}}<br>{{booking.end_time}}<br>1hr</td>
+      <td>{{booking.start_time}}<br>{{booking.end_time}}<br>{{getDurhour(booking.start_time,booking.end_time)}} hr</td>
       <td>
-          <button type="button" class="btn btn-primary mx-1" (click)="updateBooking(booking.id)">Update</button>
+        <button type="button" class="btn btn-primary mx-1" (click)="updateBooking(booking.id)">Update</button>
       </td>
-      </tr>
-      <tr>
-        <th scope="row">
-            20-04-24<br>
-            Sample
-        </th>
-        <td>Ahmed Usman<br>8553083127<br>Website</td>
-        <td>5:30pm<br>6:30pm<br>1hr</td>
-        <td>
-            <!-- <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button> -->
-            <button type="button" class="btn btn-primary mx-1" >Update</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-<button type="button" class="btn btn-primary mx-1" (click)="getAllBooking()">getAllBooking</button>
+    </tr>
+  </tbody>
+</table>

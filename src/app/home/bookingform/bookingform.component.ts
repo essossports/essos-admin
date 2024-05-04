@@ -6,9 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { collection, doc, getFirestore, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import { ConstantsService } from '../../shared/constants.service';
 import { SharedService } from '../../shared/shared.service';
+import { BookingModel } from '../../booking-model';
+import { FirestoreService } from '../../shared/firestore.service';
 
 @Component({
   selector: 'app-bookingform',
@@ -22,60 +24,75 @@ export class BookingformComponent {
   bookingForm: FormGroup = new FormGroup({});
   constantsService = inject(ConstantsService);
   sharedService = inject(SharedService);
+  firestoreService = inject(FirestoreService);
   constructor() {
     this.startTimes = this.constantsService.getStartTimes();
     this.bookingForm = this.sharedService.getBookingForm();
+    console.log(this.bookingForm.value);
   }
 
-  bookingData: any;
+  bookingData!: BookingModel;
 
-  
+
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.bookingForm.value);
     this.bookingData = this.bookingForm.value;
-    if (this.bookingData.id !== '') {
-      this.updateData();
+    const bookData: BookingModel = this.sharedService.getBookingData(this.bookingData);
+    if (this.bookingData.id !== null && this.bookingData.id !== "") {
+      console.log("updateData()");
+      // this.updateData();
+      this.firestoreService.updateBooking(bookData, this.bookingData.id);
+    this.sharedService.currentPage = this.sharedService.lastPage;
     } else {
-      this.addData();
+      console.log("addData()");
+      this.firestoreService.addBooking(bookData);
+      // this.addData();
     }
   }
-  async updateData() {
-    const db = getFirestore();
-    await setDoc(
-      doc(db, 'bookings', this.bookingData.id),
-      this.getBookingData()
-    );
-    // this.sharedService.currentPage = 'all-booking';
-  }
 
-  getBookingData() {
-    return {
-      date: this.bookingData.date,
-      name: this.bookingData.name,
-      number: this.bookingData.number,
-      email: this.bookingData.email,
-      booking_type: this.bookingData.booking_type,
-      start_time: this.bookingData.start_time,
-      end_time: this.bookingData.end_time,
-      total_amount: this.bookingData.total_amount,
-      amount_received: this.bookingData.amount_received,
-      balance: this.bookingData.balance,
-      comments: this.bookingData.comments,
-    };
-  }
-
-  async addData() {
-    const db = getFirestore();
-    const bookDoc = doc(collection(db, 'bookings'));
-    const bookData = this.getBookingData();
-    try {
-      await setDoc(bookDoc, bookData);
-      console.log('Document successfully written!');
-      this.bookingForm.reset();
-    } catch (error) {
-      console.error('Error writing document: ', error);
+  onDelete() {
+    console.log("onDelete()");
+    if (confirm('Are you sure you want to delete this booking?')) {
+      this.bookingData = this.bookingForm.value;
+      this.firestoreService.deleteBooking(this.bookingData.id);
+      console.log("Delete Successful");
+      this.sharedService.currentPage = this.sharedService.pages['all-booking'];
     }
   }
+
+  
+
+  
+
+  // async addData() {
+  //   const db = getFirestore();
+  //   try {
+  //     // const bookDoc = doc(collection(db, 'bookings'));
+  //     console.log('writing document');
+  //     const bookData = this.getBookingData();
+  //     console.log(bookData);
+  //     const bookDocRef = await addDoc(collection(db, 'bookings'), bookData);
+  //     bookData.id = bookDocRef.id;
+  //     await setDoc(bookDocRef, bookData);
+  //     console.log('Document successfully written!');
+  //     this.bookingForm.reset();
+  //   } catch (error) {
+  //     console.error('Error writing document: ', error);
+  //   }
+  // }
+  
+
+  // async updateData() {
+  //   const db = getFirestore();
+  //   const bookData: BookingModel = this.getBookingData();
+  //   const bookDataObject = { ...bookData };
+  //   await setDoc(
+  //     doc(db, 'bookings', this.bookingData.id),
+  //     bookDataObject
+  //   );
+  //   // this.sharedService.currentPage = 'all-booking';
+  // }
+  
 }
