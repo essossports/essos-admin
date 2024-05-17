@@ -5,6 +5,7 @@ import { SharedService } from '../../shared/shared.service';
 import { FormsModule } from '@angular/forms';
 import { Timestamp, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import { FirestoreService } from '../../shared/firestore.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-excel-match',
@@ -17,6 +18,7 @@ export class ExcelMatchComponent {
   formFields: string[] = [];
   selectedFields: string[] = [];
   firestoreService = inject(FirestoreService);
+  router = inject(Router);
 
   constructor(private sharedService: SharedService) {
     const bookingModelInstance = new BookingModel(
@@ -74,8 +76,9 @@ export class ExcelMatchComponent {
     });
     this.sharedService.fullExcelData = [];
     this.sharedService.firstExcelData = [];
-    this.sharedService.currentPage = this.sharedService.lastPage;
-    this.sharedService.lastPage = "home";
+    // this.sharedService.currentPage = this.sharedService.lastPage;
+    // this.sharedService.lastPage = "home";
+    this.router.navigateByUrl('/')
   }
 
 

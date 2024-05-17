@@ -38,7 +38,10 @@ export class LoginComponent {
     const rawForm = this.loginForm.getRawValue();
     this.login(rawForm.email!, rawForm.password!).subscribe({
       next: () => {this.router.navigateByUrl('/');},
-      error: (err) => {console.log(err);}
+      error: (err) => {
+        console.log(err);
+        alert("Incorrect Email or Password!");
+      }
     });
   }
 

@@ -1,0 +1,33 @@
+  <!-- <div *ngIf="isVisible" class="modal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>Modal Header</h2>
+      <p>This is a simple modal.</p>
+      <p>It can contain any HTML content, such as text, images, forms, etc.</p>
+    </div>
+  </div> -->
+
+  <div *ngIf="isVisible" class="modal d-block">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{sharedService.tournamentModalTitle}}</h5>
+          <button type="button" class="btn-close"  (click)="closeModal()">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="sharedService.tournamentModalType == 'date'" class="">
+            <input id="date" type="date" class="form-control" [(ngModel)]="inputValue" placeholder="Enter {{sharedService.tournamentModalTitle}}" />
+          </div>
+          <div *ngIf="sharedService.tournamentModalType == 'text'" class="">
+            <input id="text" type="text" class="form-control" [(ngModel)]="inputValue" placeholder="Enter {{sharedService.tournamentModalTitle}}" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeModal(); onSubmit()">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

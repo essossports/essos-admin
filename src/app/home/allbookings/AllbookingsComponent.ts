@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
 import { CommonModule } from '@angular/common';
 import { BookingModel } from '../../booking-model';
 import { Timestamp } from 'firebase/firestore';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-allbookings',
@@ -22,6 +23,7 @@ export class AllbookingsComponent {
   }
 
   bookings: BookingModel[] = [];
+  router = inject(Router);
 
   bookMonthYear!: FormGroup;
   years: number[] = [];
@@ -49,7 +51,7 @@ export class AllbookingsComponent {
     });
 
     await this.getAllBooking();
-    console.log(this.bookings);
+    // console.log(this.bookings);
     const currentYear = new Date().getFullYear();
     const startYear = 2021;
     this.years = Array.from({length: currentYear - startYear + 1}, (_, index) => startYear + index);
@@ -81,8 +83,9 @@ export class AllbookingsComponent {
       where('date', '<=', Timestamp.fromDate(endD))
   );
     const querySnapshot = await getDocs(q);
+    console.log("Number of querySnapshot is", querySnapshot.size);
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, ' => ', doc.data());
+      // console.log(doc.id, ' => ', doc.data());
       const data = doc.data();
       // const bookingDate = "";
       // if (data['date'] !== null) {
@@ -109,36 +112,33 @@ export class AllbookingsComponent {
   }
 
   updateBooking(id: string) {
-    const booking = this.bookings.find((b) => b.id === id)!;
-    this.sharedService.bookingForm.patchValue({
-      id: booking.id,
-      date: this.formatDate(booking.date),
-      name: booking.name,
-      number: booking.number,
-      email: booking.email,
-      booking_type: booking.booking_type,
-      start_time: booking.start_time,
-      end_time: booking.end_time,
-      total_amount: booking.total_amount,
-      amount_received: booking.amount_received,
-      balance: booking.balance,
-      comments: booking.comments,
-    });
-    this.sharedService.lastPage = this.sharedService.pages['all-booking'];
-    this.sharedService.currentPage = 'add-booking';
+    this.sharedService.updateBooking(id,this.bookings);
+    this.router.navigateByUrl("/booking-form");
+    // const booking = this.bookings.find((b) => b.id === id)!;
+    // this.sharedService.bookingForm.patchValue({
+    //   id: booking.id,
+    //   date: this.formatDate(booking.date),
+    //   name: booking.name,
+    //   number: booking.number,
+    //   email: booking.email,
+    //   booking_type: booking.booking_type,
+    //   start_time: booking.start_time,
+    //   end_time: booking.end_time,
+    //   total_amount: booking.total_amount,
+    //   amount_received: booking.amount_received,
+    //   balance: booking.balance,
+    //   comments: booking.comments,
+    // });
+    // this.sharedService.lastPage = this.sharedService.pages['all-booking'];
+    // this.sharedService.currentPage = 'add-booking';
   }
 
-  private formatDate(date: Timestamp) {
-    const d = date.toDate();
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    const year = d.getFullYear();
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    return [year, month, day].join('-');
-  }
 
   getDurhour(start:string, end:string) {
-    return this.sharedService.calculateDurationHours(start, end);
+    if (start != null && end != null) {
+      return this.sharedService.calculateDurationHours(start, end);
+    } else {
+      return "x";
+    }
   }
 }

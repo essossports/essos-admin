@@ -1,39 +1,31 @@
 <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor02">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <button class="nav-link" (click)="showPage('home')">Home
-              <span class="visually-hidden">(current)</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" (click)="showPage('all-booking')">All Bookings</button>
-          </li>
-          <li class="nav-item">
-            <!-- <a class="nav-link" href="#">Add Booking</a> -->
-            <button class="btn btn-secondary" (click)="showPage('add-booking')">Add Booking</button>
-          </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-          </li> -->
-        </ul>
-        <button class="btn btn-secondary my-2 my-sm-0" (click)="logout()">Logout</button>
-      
+  <div class="container-fluid">
+    <a class="navbar-brand"  routerLink="/" (click)="collapseNavbar()">ESSOS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02"
+      aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav me-auto mb-5 mb-lg-0">
+        <li class="nav-item">
+          <button class="nav-link" routerLink="/" (click)="collapseNavbar()">Home
+            <span class="visually-hidden">(current)</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" routerLink="/all-bookings" (click)="collapseNavbar()">All Bookings</button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-secondary" (click)="addBooking(); collapseNavbar()">Add Booking</button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-secondary"  routerLink="/tournament" (click)="collapseNavbar()">Tournaments</button>
+        </li>
+      </ul>
+      <div class="d-flex">
+        <button class="btn btn-success my-2 my-sm-0" (click)="logout()">Logout</button>
       </div>
+
     </div>
-  </nav>
+  </div>
+</nav>

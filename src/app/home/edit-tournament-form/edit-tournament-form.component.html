@@ -1,0 +1,24 @@
+<div class="container">
+    <form class="row" [formGroup]="tourForm" (ngSubmit)="onSubmit()">
+  
+      <div class="col-12">
+        <label for="heading" class="form-label mt-4">Heading: </label>
+        <input id="heading" type="text" class="form-control" placeholder="Enter Heading" formControlName="heading" />
+      </div>
+      
+      <div class="col-12">
+        <label for="description" class="form-label mt-4">Description: </label>
+        <input id="description" type="text" class="form-control" placeholder="Enter description" formControlName="description" />
+      </div>
+      
+      <div class="col-12">
+        <label for="terms" class="form-label mt-4">Terms: </label>
+        <input id="terms" type="text" class="form-control" placeholder="Enter terms" formControlName="terms" />
+      </div>
+
+      
+    <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+</div>

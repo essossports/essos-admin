@@ -1,21 +1,16 @@
 import { Component, inject } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule, Location } from '@angular/common';
 import { ConstantsService } from '../../shared/constants.service';
 import { SharedService } from '../../shared/shared.service';
 import { BookingModel } from '../../booking-model';
 import { FirestoreService } from '../../shared/firestore.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-bookingform',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './bookingform.component.html',
   styleUrl: './bookingform.component.css',
 })
@@ -25,7 +20,7 @@ export class BookingformComponent {
   constantsService = inject(ConstantsService);
   sharedService = inject(SharedService);
   firestoreService = inject(FirestoreService);
-  constructor() {
+  constructor(private location: Location) {
     this.startTimes = this.constantsService.getStartTimes();
     this.bookingForm = this.sharedService.getBookingForm();
     console.log(this.bookingForm.value);
@@ -33,38 +28,44 @@ export class BookingformComponent {
 
   bookingData!: BookingModel;
 
-
+  goBack(): void {
+    this.location.back();
+  }
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.bookingForm.value);
     this.bookingData = this.bookingForm.value;
-    const bookData: BookingModel = this.sharedService.getBookingData(this.bookingData);
-    if (this.bookingData.id !== null && this.bookingData.id !== "") {
-      console.log("updateData()");
+    const bookData: BookingModel = this.sharedService.getBookingData(
+      this.bookingData
+    );
+    if (this.bookingData.id !== null && this.bookingData.id !== '') {
+      console.log('updateData()');
       // this.updateData();
       this.firestoreService.updateBooking(bookData, this.bookingData.id);
-    this.sharedService.currentPage = this.sharedService.lastPage;
+      // this.sharedService.currentPage = this.sharedService.lastPage;
+      // this.sharedService.lastPage = 'home';
+      this.location.back();
+      this.bookingForm.reset();
     } else {
-      console.log("addData()");
+      console.log('addData()');
       this.firestoreService.addBooking(bookData);
       // this.addData();
+      alert('Booking added!');
+      this.bookingForm.reset();
     }
   }
 
   onDelete() {
-    console.log("onDelete()");
+    console.log('onDelete()');
     if (confirm('Are you sure you want to delete this booking?')) {
       this.bookingData = this.bookingForm.value;
       this.firestoreService.deleteBooking(this.bookingData.id);
-      console.log("Delete Successful");
-      this.sharedService.currentPage = this.sharedService.pages['all-booking'];
+      console.log('Delete Successful');
+      // this.sharedService.currentPage = this.sharedService.pages['all-booking'];
+      this.location.back();
     }
   }
-
-  
-
-  
 
   // async addData() {
   //   const db = getFirestore();
@@ -82,7 +83,6 @@ export class BookingformComponent {
   //     console.error('Error writing document: ', error);
   //   }
   // }
-  
 
   // async updateData() {
   //   const db = getFirestore();
@@ -94,5 +94,4 @@ export class BookingformComponent {
   //   );
   //   // this.sharedService.currentPage = 'all-booking';
   // }
-  
 }

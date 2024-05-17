@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { Timestamp, collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
 import { BookingModel } from '../../booking-model';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bookings',
@@ -14,8 +15,11 @@ import { CommonModule } from '@angular/common';
 export class BookingsComponent {
   private db = getFirestore();
   bookings: BookingModel[] = [];
+  router = inject(Router);
 
   constructor(private sharedService: SharedService) {}
+
+
 
   // showPage(page: string) {
   //   console.log(this.sharedService.bookingForm.value);
@@ -30,20 +34,33 @@ export class BookingsComponent {
     this.get2daysBooking();
   }
 
-  getDurhour(a:string,b:string) {
-    return "";
+  getDurhour(start:string, end:string) {
+    if (start != null && end != null) {
+      
+    return this.sharedService.calculateDurationHours(start, end);
+    } else {
+      return "x";
+    }
   }
+
   updateBooking(id:string) {
-    
+    this.sharedService.updateBooking(id,this.bookings);
+    // this.sharedService.lastPage = this.sharedService.pages['all-booking'];
+    this.router.navigateByUrl("/booking-form");
   }
   
   async get2daysBooking() {
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth();
-    const startD = new Date(year, month, 1);
+    // const year = new Date().getFullYear();
+    // const month = new Date().getMonth();
+    // const day = new Date().getDate();
+    // const startD = new Date(year, month, day);
+    console.log("get2daysBooking()");
+    const startD = new Date().setHours(0,0,0,0);
+    const startDay = new Date(startD);
+    console.log(startDay);
     const q = query(
       collection(this.db, 'bookings'),
-      where('date', '>=', Timestamp.fromDate(startD)),
+      where('date', '>=', Timestamp.fromDate(startDay)),
   );
     const querySnapshot = await getDocs(q);
     

@@ -8,13 +8,19 @@ import { ConstantsService } from './constants.service';
   providedIn: 'root'
 })
 export class SharedService {
-  // currentPage: string = 'home';
+  currentPage: string = 'home';
   // currentPage: string = 'excel-match';
-  currentPage: string = 'excel-form';
+  // currentPage: string = 'excel-form';
   lastPage: string = 'home';
 
   showBookingsForYear: number = new Date().getFullYear();
   showBookingsForMonth: number = new Date().getMonth() + 1;
+
+  
+  tournamentModalTitle = "";
+  tournamentModalType = "";
+  tournamentModalValue = "";
+  tournamentId = "";
 
   pages = {
     'home': 'home',
@@ -39,6 +45,10 @@ export class SharedService {
     comments: new FormControl(''),
   });
 
+  convertTimestampToDateStr(timestamp: Timestamp): string {
+    const date = timestamp.toDate();
+    return date.toISOString().split('T')[0];
+  }
 
   createNewBooking(): BookingModel {
     return new BookingModel(
@@ -130,8 +140,8 @@ export class SharedService {
 
   calculateDurationHours(startTime: string, endTime: string): number {
     const allTimes = new ConstantsService().startTimes;
-    const startTimeIndex = allTimes.indexOf(startTime);
-    const endTimeIndex = allTimes.indexOf(endTime);
+    const startTimeIndex = allTimes.indexOf(startTime.toLowerCase());
+    const endTimeIndex = allTimes.indexOf(endTime.toLowerCase());
 
     if (startTimeIndex === -1 || endTimeIndex === -1) {
       // Handle error: start time or end time not found in the times array
@@ -144,6 +154,36 @@ export class SharedService {
     return durationHours;
   }
   
+  updateBooking(id: string, bookings: BookingModel[]) {
+    const booking = bookings.find((b) => b.id === id)!;
+    this.bookingForm.patchValue({
+      id: booking.id,
+      date: this.formatDate(booking.date),
+      name: booking.name,
+      number: booking.number,
+      email: booking.email,
+      booking_type: booking.booking_type,
+      start_time: booking.start_time?.toLowerCase() ?? null,
+      end_time: booking.end_time?.toLowerCase() ?? null,
+      total_amount: booking.total_amount,
+      amount_received: booking.amount_received,
+      balance: booking.balance,
+      comments: booking.comments,
+    });
+    // this.lastPage = this.pages['all-booking'];
+    // this.currentPage = 'add-booking';
+  }
+
+  
+  private formatDate(date: Timestamp) {
+    const d = date.toDate();
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+  }
 
   constructor() { }
 }

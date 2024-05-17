@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from '../../shared/shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-excel-form',
@@ -11,6 +12,8 @@ import { SharedService } from '../../shared/shared.service';
 })
 export class ExcelFormComponent {
   constructor(private sharedService: SharedService) {}
+  
+  router = inject(Router);
 
   excelForm = new FormGroup({
     excel_data: new FormControl(''),
@@ -38,6 +41,7 @@ export class ExcelFormComponent {
     console.log("Excel lines:" , listOfLists.length)
     this.sharedService.fullExcelData = listOfLists;
     this.sharedService.firstExcelData = listOfLists[0];
-    this.sharedService.currentPage = this.sharedService.pages['excel-match'];
+    // this.sharedService.currentPage = this.sharedService.pages['excel-match'];
+    this.router.navigateByUrl("/excel-match");
   }
 }

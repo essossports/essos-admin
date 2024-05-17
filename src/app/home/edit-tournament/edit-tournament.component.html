@@ -1,0 +1,110 @@
+<div class="container">
+  <button class="btn btn-primary">Add banner heading</button>
+  <button class="btn btn-primary">Add banner description</button>
+
+  <button class="btn btn-primary">Add Form Heading</button>
+  <button class="btn btn-primary">Add Form description</button>
+
+  <button class="btn btn-primary">Add Terms and Condition</button>
+  <div class="card my-3">
+    <div class="card-header d-flex justify-content-between">
+      <div>Sample</div>
+      <div>
+        <button class="btn btn-outline-danger btn-sm me-2" (click)="updateDefaults()">Save as Default</button>
+        <button class="btn btn-danger btn-sm" (click)="applyDefaults()">Apply Default</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <h4 class="card-title">
+        {{ tournament?.bannerTitle }}
+        <button
+          class="btn btn-outline-warning btn-sm"
+          (click)="editHeading(); openModal()"
+        >
+          Edit
+        </button>
+      </h4>
+      <h6 class="text-muted card-subtitle mb-2">
+        {{ tournament?.date!.toDate() | date:'dd-MM-yyyy'}}
+        <button
+          class="btn btn-outline-warning btn-sm"
+          (click)="editDate(); openModal()"
+        >
+          Edit
+        </button>
+      </h6>
+      <p class="card-text">
+        {{ tournament?.bannerDesc }}
+        <button
+          class="btn btn-outline-warning btn-sm"
+          (click)="editDesc(); openModal()"
+        >
+          Edit
+        </button>
+      </p>
+      <p class="card-text">
+        Last date to apply: {{ tournament?.bannerLastDate!.toDate() | date:'dd-MM-yyyy' }}
+        <button
+          class="btn btn-outline-warning btn-sm"
+          (click)="editLastDate(); openModal()"
+        >
+          Edit
+        </button>
+      </p>
+      <button
+        class="btn btn-primary"
+        type="button"
+        routerLink="/tourn-form"
+        disabled
+      >
+        Create Team
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-edit-tournament-form></app-edit-tournament-form>
+
+
+
+<!-- <app-modal #modal (submitClicked)="onSubmit($event)"></app-modal> -->
+
+<div *ngIf="isVisible" class="modal d-block">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ tournamentModalTitle }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input
+        #inputField
+          id="text"
+          type="{{ tournamentModalType == 'date' ? 'date' : 'text' }}"
+          class="form-control"
+          placeholder="Enter {{ tournamentModalTitle }}"
+          value="{{tournamentModalValue}}"
+        />
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="closeModal(); onSubmit(tournamentModalKey, inputField.value)"
+        >
+          Save changes
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          (click)="closeModal()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

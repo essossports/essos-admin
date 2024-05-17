@@ -1,11 +1,11 @@
-<button (click)="sharedService.setCurrentPage('excel-form')"
+<button routerLink="/excel-form"
   *ngIf="bookingForm.get('id')?.value === '' || !bookingForm.get('id')?.value" type="button"
   class="btn btn-primary mx-1">
   Upload Excel
 </button>
 
 <div class="d-flex flex-row-reverse" *ngIf="bookingForm.get('id')?.value !== '' && bookingForm.get('id')?.value">
-  <button (click)=" sharedService.setCurrentPage('previous') " type="button" class="btn btn-primary mx-1 float-end">
+  <button (click)="goBack()" type="button" class="btn btn-primary mx-1 float-end">
     Close
   </button>
   <button (click)="onDelete()" type="button" class="btn btn-danger mx-1 float-end">
@@ -48,7 +48,7 @@
     <div class="col-6 col-lg-6">
       <label for="start_time" class="form-label mt-4">Start Time</label>
       <select class="form-select" id="start_time" formControlName="start_time">
-        <option *ngFor="let startTime of startTimes">{{ startTime }}</option>
+        <option *ngFor="let startTime of startTimes" value="{{startTime}}">{{ startTime }}</option>
       </select>
     </div>
 
@@ -57,9 +57,9 @@
     <div class="col-6 col-lg-6">
       <label for="end_time" class="form-label mt-4">End Time</label>
       <select class="form-select" id="end_time" formControlName="end_time">
-        <option *ngFor="let startTime of startTimes">{{ startTime }}</option>
+        <option *ngFor="let startTime of startTimes" value="{{startTime}}">{{ startTime }}</option>
       </select>
-    </div>
+    </div>  
 
     <div class="col-12 col-lg-6">
       <label for="total_amount" class="form-label mt-4">Total Amount: </label>

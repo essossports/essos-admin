@@ -1,0 +1,55 @@
+<form class="container my-3" [formGroup]="createTourForm" (ngSubmit)="create()">
+    <div class="card p-3">
+        <div class="row">
+            <div class="col-md-4"><label class="form-label">Date</label>
+                <input class="form-control" type="date" formControlName="date"/>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Sport</label>
+                <div class="form-check">
+                    <input id="formCheck-1" class="form-check-input" type="radio"  value="cricket" formControlName="sport"/>
+                    <label class="form-check-label" for="formCheck-1">Cricket</label>
+                </div>
+                <div class="form-check">
+                    <input id="formCheck-2" class="form-check-input" type="radio"  value="football" formControlName="sport" />
+                    <label class="form-check-label" for="formCheck-2">Football</label>
+                </div>
+            </div>
+            <div class="col-md-4 d-xl-flex justify-content-xl-center align-items-xl-center">
+                <button class="btn btn-primary" type="submit" [disabled]="!createTourForm.valid" >Create</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <h3>Upcoming Tournaments</h3>
+        <button routerLink="/old-tournaments" class="btn btn-primary">View Completed</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Sport</th>
+                    <th>Live</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngFor="let tournament of tournaments">
+                    <td>{{ tournament.date.toDate() | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ tournament.sport }}</td>
+                    <td><input type="checkbox" [checked]="tournament.isLive" (change)="updateIsLive(tournament.id, $event)"/></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm me-3" type="button" (click)="editTour(tournament.id)">Edit</button>
+                        <button class="btn btn-danger btn-sm me-3" type="button" (click)="deleteTour(tournament.id)">Delete</button>
+                        <button class="btn btn-secondary btn-sm" type="button" (click)="complete(tournament.id)">Completed</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
