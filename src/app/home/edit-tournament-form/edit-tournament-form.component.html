@@ -1,24 +1,40 @@
 <div class="container">
-    <form class="row" [formGroup]="tourForm" (ngSubmit)="onSubmit()">
-  
-      <div class="col-12">
-        <label for="heading" class="form-label mt-4">Heading: </label>
-        <input id="heading" type="text" class="form-control" placeholder="Enter Heading" formControlName="heading" />
-      </div>
-      
-      <div class="col-12">
-        <label for="description" class="form-label mt-4">Description: </label>
-        <input id="description" type="text" class="form-control" placeholder="Enter description" formControlName="description" />
-      </div>
-      
-      <div class="col-12">
-        <label for="terms" class="form-label mt-4">Terms: </label>
-        <input id="terms" type="text" class="form-control" placeholder="Enter terms" formControlName="terms" />
-      </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <h5>Tournament Form Content</h5>
+            <div>
+                <button class="btn btn-outline-danger btn-sm me-2" (click)="updateDefaults()">Save as Default</button>
+                <button class="btn btn-danger btn-sm" (click)="applyDefaults()">Apply Default</button>
+              </div>
+        </div>
+        <div class="card-body">
+            <form class="row" [formGroup]="tourForm" (ngSubmit)="onSubmit()">
+          
+              <div class="col-12">
+                <label for="heading" class="form-label mt-4">Heading: </label>
+                <input id="heading" type="text" class="form-control" placeholder="Enter Heading" formControlName="heading" />
+              </div>
+              
+              <div class="col-12">
+                <label for="description" class="form-label mt-4">Description: </label>
+                <input id="description" type="text" class="form-control" placeholder="Enter description" formControlName="description" />
+              </div>
 
-      
-    <button type="submit" class="btn btn-primary">
-        Submit
-      </button>
-    </form>
+              <div class="col-12">
+                <p class="mt-4">Players:</p>
+                <p class="">[10 players name and number]</p>
+              </div>
+              
+              <div class="col-12">
+                <label for="terms" class="form-label mt-4">Terms: </label>
+                <textarea id="terms" type="text" class="form-control" placeholder="Enter terms" formControlName="terms" rows="10"></textarea>
+              </div>
+        
+              
+            <button type="submit" class="btn btn-primary mt-2">
+                Submit
+              </button>
+            </form>
+        </div>
+    </div>
 </div>

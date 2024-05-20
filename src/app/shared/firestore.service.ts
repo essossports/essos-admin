@@ -8,9 +8,10 @@ import {
   getDoc,
   getFirestore,
   setDoc,
+  updateDoc,
 } from 'firebase/firestore';
 import { BookingModel } from '../booking-model';
-import { Tournament } from '../models/tournament';
+import { Tournament, tournamentConverter } from '../models/tournament';
 import { DefaultTournament } from '../models/default-tournament';
 
 @Injectable({
@@ -48,8 +49,16 @@ export class FirestoreService {
 
   async updateTournament(data: Tournament, id: string) {
     console.log('firestore service: updating tournament');
-    const dataObject = { ...data };
-    await setDoc(doc(this.db, 'tournament', id), dataObject);
+    console.log(data);
+    // const dataObject = { ...data };
+    const ref = doc(this.db, "tournament", id).withConverter(tournamentConverter);
+    await setDoc(ref, data);
+  }
+
+  async patchTournament(data: { [key: string]: any }, id: string) {
+    const docRef = doc(this.db, 'tournament', id);
+    await updateDoc(docRef, data);
+    console.log("firestore service : patchTournament completed");
   }
 
   addBooking(bookData: BookingModel) {
@@ -83,5 +92,21 @@ export class FirestoreService {
     const docRef = doc(this.db, 'tournament', 'default');
     await setDoc(docRef, { ...data });
     console.log('Setting default successfull');
+  }
+
+  async getDefaultTourForm() {
+    const docRef = doc(this.db, 'tournament', 'defaultForm');
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return {};
+    }
+  }
+  
+  async setDefaultTourForm(data: { [key: string]: any }) {
+    const docRef = doc(this.db, 'tournament', 'defaultForm');
+    await setDoc(docRef, data );
+    console.log('Setting defaultForm successfull');
   }
 }

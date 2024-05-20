@@ -73,6 +73,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         Timestamp.fromDate(lastDate),
         defaultTour.bannerDesc,
         defaultTour.bannerTitle,
+        '','','',
       )
     );
     // this.tournaments = [];
@@ -127,6 +128,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
           formTerms: data['formTerms'],
         });
       });
+      console.log(this.tournaments);
     });
     // const q = query(collection(db, 'tournament'));
     // const querySnapshot = await getDocs(q);

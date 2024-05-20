@@ -1,19 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { SharedService } from '../../shared/shared.service';
-import {
-  collection,
-  doc,
-  getFirestore,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore';
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { Tournament } from '../../models/tournament';
 import { CommonModule } from '@angular/common';
 import { FirestoreService } from '../../shared/firestore.service';
 import { DefaultTournament } from '../../models/default-tournament';
-import { FormControl, FormGroup } from '@angular/forms';
 import { EditTournamentFormComponent } from '../edit-tournament-form/edit-tournament-form.component';
 
 @Component({
@@ -78,6 +70,9 @@ export class EditTournamentComponent implements OnInit, OnDestroy {
           data['bannerLastDate'],
           data['bannerDesc'],
           data['bannerTitle'],
+          data['formHeading'],
+          data['formDesc'],
+          data['formTerms'],
         );
         console.log('Document data:', this.tournament);
       } else {
