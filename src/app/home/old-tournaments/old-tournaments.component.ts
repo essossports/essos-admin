@@ -52,6 +52,7 @@ export class OldTournamentsComponent implements OnInit, OnDestroy {
           sport: data['sport'],
           isLive: data['isLive'],
           isCompleted: data['isCompleted'],
+          isLanding: data['isLanding'],
           bannerLastDate: data['bannerLastDate'],
           bannerDesc: data['bannerDesc'],
           bannerTitle: data['bannerTitle'],

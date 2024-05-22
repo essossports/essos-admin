@@ -46,7 +46,11 @@
                     <td>
                         <button class="btn btn-primary btn-sm me-3" type="button" (click)="editTour(tournament.id)">Edit</button>
                         <button class="btn btn-danger btn-sm me-3" type="button" (click)="deleteTour(tournament.id)">Delete</button>
-                        <button class="btn btn-secondary btn-sm" type="button" (click)="complete(tournament.id)">Completed</button>
+                        <button class="btn btn-secondary btn-sm me-3" type="button" (click)="complete(tournament.id)">Completed</button>
+                        <button class="btn btn-primary btn-sm me-3" type="button" (click)="manage(tournament.id)">Manage</button>
+                        <button *ngIf="tournament.isLanding == false" class="btn btn-primary btn-sm" type="button" (click)="landingPage(tournament.id)">Set as Landing Page</button>
+                        <button *ngIf="tournament.isLanding == true" class="btn btn-primary btn-sm" type="button" (click)="removeLandingPage(tournament.id)">Remove Landing Page</button>
+                    
                     </td>
                 </tr>
             </tbody>

@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Query } from '@angular/core';
 import {
+  DocumentData,
   DocumentReference,
+  QueryConstraint,
+  QueryFieldFilterConstraint,
   addDoc,
   collection,
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
   getFirestore,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { BookingModel } from '../booking-model';
 import { Tournament, tournamentConverter } from '../models/tournament';
@@ -37,6 +43,44 @@ export class FirestoreService {
     this.addData({ ...data }, 'tournament');
   }
 
+  tournamentQueryCompleted = query(
+      collection(this.db, 'tournament'),
+      where('isCompleted', '==', false)
+    ).withConverter(tournamentConverter);
+
+  async getTournament(tournId:string): Promise<Tournament|undefined> {
+    console.log('firestore getTournament');
+    const docRef = doc(this.db, "tournament", tournId).withConverter(tournamentConverter);
+    const docSnap  = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      console.log("No such document!");
+      return undefined;
+    }
+  }
+
+  async removeAllLandingTournament() {
+    const q = query(
+      collection(this.db, 'tournament'),
+      where('isLanding', '==', true)
+    );
+    const querySnapshot = await getDocs(q);
+    const updatePromises = querySnapshot.docs.map(async (documentSnapshot) => {
+      const tournamentRef = doc(this.db, 'tournament', documentSnapshot.id);
+      return updateDoc(tournamentRef, { isLanding: false });
+    });
+    await Promise.all(updatePromises);
+    console.log('All landing-page tournaments have been updated to false.');
+  }
+
+  async setLandingTournament(id:string) {
+    const docRef = doc(this.db, 'tournament', id);
+    await updateDoc(docRef, {
+      isLanding: true
+    });
+  }
+
   async deleteTournament(id: string) {
     try {
       console.log('Deleting doc id', id);
@@ -51,14 +95,16 @@ export class FirestoreService {
     console.log('firestore service: updating tournament');
     console.log(data);
     // const dataObject = { ...data };
-    const ref = doc(this.db, "tournament", id).withConverter(tournamentConverter);
+    const ref = doc(this.db, 'tournament', id).withConverter(
+      tournamentConverter
+    );
     await setDoc(ref, data);
   }
 
   async patchTournament(data: { [key: string]: any }, id: string) {
     const docRef = doc(this.db, 'tournament', id);
     await updateDoc(docRef, data);
-    console.log("firestore service : patchTournament completed");
+    console.log('firestore service : patchTournament completed');
   }
 
   addBooking(bookData: BookingModel) {
@@ -81,7 +127,7 @@ export class FirestoreService {
     if (docSnap.exists()) {
       return new DefaultTournament(
         docSnap.data()['bannerTitle'],
-        docSnap.data()['bannerDesc'],
+        docSnap.data()['bannerDesc']
       );
     } else {
       return new DefaultTournament('x', 'x');
@@ -103,10 +149,10 @@ export class FirestoreService {
       return {};
     }
   }
-  
+
   async setDefaultTourForm(data: { [key: string]: any }) {
     const docRef = doc(this.db, 'tournament', 'defaultForm');
-    await setDoc(docRef, data );
+    await setDoc(docRef, data);
     console.log('Setting defaultForm successfull');
   }
 }

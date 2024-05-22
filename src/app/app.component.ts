@@ -51,7 +51,7 @@ export class AppComponent {
       if (user) {
         // User is signed in, redirect to home page
         console.log("checkLoginStatus: redirecting to home")
-        this.router.navigateByUrl('/edit-tournament');
+        this.router.navigateByUrl('/');
         this.isLoggedin = true;
       } else {
         // User is not signed in, redirect to login page

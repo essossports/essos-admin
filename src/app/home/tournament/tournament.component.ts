@@ -6,16 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { FirestoreService } from '../../shared/firestore.service';
-import {
-  Timestamp,
-  collection,
-  doc,
-  getDocs,
-  getFirestore,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore';
+import { Timestamp, onSnapshot } from 'firebase/firestore';
 import { SharedService } from '../../shared/shared.service';
 import { CommonModule } from '@angular/common';
 import { Tournament } from '../../models/tournament';
@@ -32,7 +23,7 @@ import { DefaultTournament } from '../../models/default-tournament';
 export class TournamentComponent implements OnInit, OnDestroy {
   sharedService = inject(SharedService);
   firestoreService = inject(FirestoreService);
-  router = inject(Router)
+  router = inject(Router);
   tournaments: Tournament[] = [];
   private unsubscribe!: () => void;
 
@@ -42,7 +33,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.unsubscribe) {
-      console.log("unsubscribing tournament")
+      console.log('unsubscribing tournament');
       this.unsubscribe();
     }
   }
@@ -58,7 +49,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
   // }
   async create() {
     console.log(this.createTourForm.value);
-    const defaultTour: DefaultTournament = await this.firestoreService.getDefaultTour();
+    const defaultTour: DefaultTournament =
+      await this.firestoreService.getDefaultTour();
     const date: Date = new Date(this.createTourForm.value.date!);
     const lastDate: Date = new Date(date);
     lastDate.setDate(date.getDate() - 1);
@@ -70,10 +62,13 @@ export class TournamentComponent implements OnInit, OnDestroy {
         this.createTourForm.value.sport!,
         false,
         false,
+        false,
         Timestamp.fromDate(lastDate),
         defaultTour.bannerDesc,
         defaultTour.bannerTitle,
-        '','','',
+        '',
+        '',
+        ''
       )
     );
     // this.tournaments = [];
@@ -89,9 +84,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   editTour(id: string) {
     this.sharedService.tournamentId = id;
-    this.router.navigateByUrl("/edit-tournament");
+    this.router.navigateByUrl('/edit-tournament');
   }
-
 
   complete(id: string) {
     const currentTour = this.tournaments.find(
@@ -101,12 +95,30 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.firestoreService.updateTournament(currentTour!, id);
   }
 
-  async getAllTournament() {
-    const db = getFirestore();
-    const q = query(
-      collection(db, 'tournament'),
-      where('isCompleted', '==', false)
+  manage(id: string) {
+    this.router.navigateByUrl('/manage-tournament');
+  }
+
+  async landingPage(id: string) {
+    await this.firestoreService.removeAllLandingTournament();
+    await this.firestoreService.setLandingTournament(id);
+  }
+
+  async removeLandingPage(id: string) {
+    const currentTour = this.tournaments.find(
+      (tournament) => tournament.id === id
     );
+    if (currentTour) {
+      currentTour.isLanding = false;
+      await this.firestoreService.updateTournament(currentTour, id);
+      console.log('removeLandingPage: removed successfully');
+    } else {
+      console.log('removeLandingPage: not found');
+    }
+  }
+
+  async getAllTournament() {
+    const q = this.firestoreService.tournamentQueryCompleted;
     this.unsubscribe = onSnapshot(q, (querySnapshot) => {
       this.tournaments = [];
       const today = new Date();
@@ -114,35 +126,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
       console.log('getAllTournament()');
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        this.tournaments.push({
-          id: doc.id,
-          date: data['date'],
-          sport: data['sport'],
-          isLive: data['isLive'],
-          isCompleted: data['isCompleted'],
-          bannerLastDate: data['bannerLastDate'],
-          bannerDesc: data['bannerDesc'],
-          bannerTitle: data['bannerTitle'],          
-          formHeading: data['formHeading'],
-          formDesc: data['formDesc'],
-          formTerms: data['formTerms'],
-        });
+        this.tournaments.push(data);
       });
       console.log(this.tournaments);
     });
-    // const q = query(collection(db, 'tournament'));
-    // const querySnapshot = await getDocs(q);
-    // querySnapshot.forEach((doc) => {
-    //   console.log(doc.id, ' => ', doc.data());
-    //   const data = doc.data();
-
-    //   this.tournaments.push({
-    //     id: data['id'],
-    //     date: data['date'],
-    //     sport: data['sport'],
-    //     isLive: data['isLive'],
-    //   });
-    // });
   }
 
   updateIsLive(id: string, event: Event) {
@@ -158,8 +145,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
       console.log('updateIsLive', id);
       currentTour!.isLive = checked;
       this.firestoreService.updateTournament(currentTour!, id);
-    }
-    else {
+    } else {
       (event.target as HTMLInputElement).checked = !checked;
     }
   }

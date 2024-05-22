@@ -8,6 +8,7 @@ import { ExcelMatchComponent } from './home/excel-match/excel-match.component';
 import { TournamentComponent } from './home/tournament/tournament.component';
 import { OldTournamentsComponent } from './home/old-tournaments/old-tournaments.component';
 import { EditTournamentComponent } from './home/edit-tournament/edit-tournament.component';
+import { ManageTournamentComponent } from './home/manage-tournament/manage-tournament.component';
 
 export const routes: Routes = [
   { path: '',component: BookingsComponent,title: 'Bookings' },
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'tournament', component: TournamentComponent, title: 'Tournament' },
   { path: 'old-tournaments', component: OldTournamentsComponent, title: 'Old Tournament' },
   { path: 'edit-tournament', component: EditTournamentComponent, title: 'Edit Tournament' },
+  { path: 'manage-tournament', component: ManageTournamentComponent, title: 'Manage Tournament' },
   { path: '**', redirectTo: '' },
 ];

@@ -30,6 +30,12 @@ export class SharedService {
     'add-booking': 'add-booking',
   }
 
+  getObjById(obj:any, id:string) {
+    return obj.find(
+      (obj:any) => obj.id === id
+    );
+  }
+
   bookingForm: FormGroup = new FormGroup({
     id: new FormControl(''),
     date: new FormControl('', Validators.required),

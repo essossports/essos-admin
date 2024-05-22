@@ -67,6 +67,7 @@ export class EditTournamentComponent implements OnInit, OnDestroy {
           data['sport'],
           data['isLive'],
           data['isCompleted'],
+          data['isLanding'],
           data['bannerLastDate'],
           data['bannerDesc'],
           data['bannerTitle'],
