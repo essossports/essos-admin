@@ -100,8 +100,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   async landingPage(id: string) {
-    await this.firestoreService.removeAllLandingTournament();
-    await this.firestoreService.setLandingTournament(id);
+    const currentTour = this.tournaments.find(
+      (tournament) => tournament.id === id
+    );
+    if (currentTour?.isLive) {
+      await this.firestoreService.removeAllLandingTournament();
+      await this.firestoreService.setLandingTournament(id);
+      
+    } else {
+      alert("Set this tournament as live before setting it for landing page");
+    }
   }
 
   async removeLandingPage(id: string) {
@@ -144,6 +152,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
     if (confirmed) {
       console.log('updateIsLive', id);
       currentTour!.isLive = checked;
+      if (!checked) {
+        currentTour!.isLanding = false;
+      }
       this.firestoreService.updateTournament(currentTour!, id);
     } else {
       (event.target as HTMLInputElement).checked = !checked;

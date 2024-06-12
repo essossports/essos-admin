@@ -9,6 +9,8 @@ import {
   where,
 } from 'firebase/firestore';
 import { FirestoreService } from '../../shared/firestore.service';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-old-tournaments',
@@ -21,6 +23,7 @@ export class OldTournamentsComponent implements OnInit, OnDestroy {
   private unsubscribe!: () => void;
   tournaments: Tournament[] = [];
   firestoreService = inject(FirestoreService);
+  location = inject(Location);
 
   ngOnInit() {
     this.getAllTournament();
@@ -31,6 +34,10 @@ export class OldTournamentsComponent implements OnInit, OnDestroy {
       console.log('unsubscribing tournament');
       this.unsubscribe();
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   async getAllTournament() {
